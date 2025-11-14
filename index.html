@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Make a davem to this ducant</title>
+  <style>
+    body {
+      background: #07100a;
+      color: #aaffaa;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+    }
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: linear-gradient(180deg, #051007 0%, #07100a 100%);
+      border-radius: 10px;
+      padding: 22px;
+      box-sizing: border-box;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      border: 1px solid rgba(51,170,51,0.08);
+    }
+    h1 {
+      margin: 0 0 18px 0;
+      color: #66ff66;
+      font-size: 20px;
+      text-align: center;
+    }
+    label { display:block; margin-bottom:6px; font-size:14px; color:#bfffbf; }
+    input[type="email"], input[type="text"] {
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #2f7f2f;
+      background:#000;
+      color:#aaffaa;
+      box-sizing: border-box;
+      font-size:14px;
+      outline: none;
+    }
+    input[type="email"]:focus, input[type="text"]:focus {
+      box-shadow: 0 0 0 4px rgba(34,153,34,0.06);
+    }
+    .btn {
+      display:block;
+      width:100%;
+      margin-top:12px;
+      padding:12px;
+      border-radius:8px;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      background:#00cc44;
+      color:#000;
+      font-size:15px;
+    }
+    .success {
+      margin-top:14px;
+      display:none;
+      text-align:center;
+      color:#66ff66;
+      font-weight:700;
+    }
+    .note { font-size:12px; color:#99ff99; opacity:0.9; margin-top:10px; text-align:center; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Make a davem to this ducant and add your email and radsucting tach.</h1>
+
+    <form id="myForm" action="https://formspree.io/f/xkgkjgvr" method="POST">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required placeholder="you@example.com" />
+
+      <label for="hash">Transaction Hash</label>
+      <input id="hash" name="transaction_hash" type="text" required placeholder="0x..." />
+
+      <button class="btn" type="submit">Submit</button>
+    </form>
+
+    <p id="successMsg" class="success">Successful!</p>
+    <p class="note">After your first submit Formspree may send a confirmation email — check your inbox.</p>
+  </div>
+
+  <script>
+    const form = document.getElementById('myForm');
+    const successMsg = document.getElementById('successMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          successMsg.style.display = 'block';
+          form.reset();
+          // hide message after 4s
+          setTimeout(() => successMsg.style.display = 'none', 4000);
+        } else {
+          const json = await res.json().catch(()=> ({}));
+          alert('Submission failed. Try again.\n' + (json.error || ''));
+        }
+      } catch (err) {
+        alert('Network error — try again.');
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
